@@ -5,7 +5,7 @@ from datetime import datetime
 import click
 from flask import current_app,g
 
-sqlite3.register_convert(
+sqlite3.register_converter(
         "timestamp",lambda v: datetime.fromisoformat(v.decode())
 )
 def get_db():
