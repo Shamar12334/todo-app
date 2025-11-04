@@ -5,7 +5,7 @@ from flask import (
 )
 from werkzeug.security import check_password_hash,generate_password_hash
 from todo.db import get_db
-bp = Blueprint('auth',name,url_prefix='/auth')
+bp = Blueprint('auth',__name__,url_prefix='/auth')
 @bp.route('/register', methods=('GET','POST'))
 def register():
     if request.method == 'POST':
@@ -22,7 +22,7 @@ def register():
         if error is None:
             try:
                 db.execute(
-                        "INSERT INTO user (usernaem,password) VALUES (?,?)",
+                        "INSERT INTO user (username,password) VALUES (?,?)",
                         (username, generate_password_hash(password)),
                 )
                 db.commit()
@@ -52,7 +52,7 @@ def login():
             session.clear()
             session['user_id'] =user['id']
             return redirect(url_for('index'))
-        flask(error)
+        flash(error)
     return render_template('auth/login.html')
 @bp.before_app_request
 def load_logged_in_user():
