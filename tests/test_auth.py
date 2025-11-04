@@ -10,7 +10,7 @@ def test_register(client,app):
     assert response.headers["Location"] == "/auth/login"
     with app.app_context():
         assert get_db().execute(
-                "SELCT * FROM user WHERE username = 'a'",
+                "SELECT * FROM user WHERE username = 'a'",
         ).fetchone() is not None
 
 @pytest.mark.parametrize(('username', 'password', 'message'), (
@@ -35,7 +35,7 @@ def test_login(client, auth):
         assert g.user['username'] == 'test'
 @pytest.mark.parametrize(('username', 'password','message'), (
     ('a', 'test', b'Incorrect username'),
-    ('test','a',b'INcorrect password'),
+    ('test','a',b'Incorrect password'),
 ))
 def test_login_validate_input(auth,username,password,message):
     response = auth.login(username, password)
